@@ -1,0 +1,61 @@
+mutation {
+  createUser(document: "1020842253", document_type: CC, name: "Sebastian", last_name: "Molano", birth_date: "1999-07-08", address: "2345 Elm Street", phone_number: "+572222222", email: "smolanof@javeriana.edu.co") {
+    document,
+    document_type,
+    name,
+    last_name
+  }
+}
+
+
+mutation {
+  createAccount(id: "1", balance: 0, user_id: "1020842253") {
+    id,
+    user_id
+  }
+}
+
+mutation {
+  createAccount(id: "2", balance: 10000, user_id: "1020842253") {
+    id,
+    user_id
+  }
+}
+
+//Para hacer una transaccion: Se realiza dentro de un mismo mutation todas las operaciones.
+//De esta manera la operacion solo se completa si todas se completan. (puede abortar en el caso de que alguna falle)
+mutation {
+  
+  destinationAccount: createAccount(id: "1", balance: 5000, user_id: "1020842253") {
+    id, balance
+  }
+  
+  originAccount: createAccount(id: "2", balance: 5000, user_id: "1020842253") {
+    id, balance
+  }
+  
+  createMovement(id: "1", origin_account: "2", destination_account: "1", amount: 5000, movement_date: "2022-07-09 10:55:22") {
+    id,
+    movement_date,
+    amount,
+    origin_account,
+    destination_account
+  }
+}
+//Esta transaccion realiza un movimiento de la cuenta 2 a la cuenta 1 y registra el movimiento en la tabla de movimientos
+
+
+mutation {
+  createCreditCard(number: 1000, cvv: 123, exp_date: "1999-06-03", card_name: "SEBASTIAN", advancement_amount: 0.0, used_advancement: 0.0, debt: 0.0, user_id: "1020842253") {
+    number,
+    card_name
+  }
+}
+
+mutation {
+  createLoan(id: "1", interest_rate: 0.05, min_payment: 10000, balance: 0.0, payment_date: "1999-08-06", debt: 0, user_id: "1020842253") {
+    id,
+    interest_rate,
+    user_id
+  }
+}
